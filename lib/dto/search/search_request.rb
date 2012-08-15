@@ -11,7 +11,8 @@ class SearchRequest
   def query_params
     query = Hash.new
     url_params = ''
-    if (image.present? && (image.downcase! == 'yes' || 'no'))
+    #Perform a case insensitive match on the image attribute
+    if (image =~ /\A(yes|no)/i))
       url_params += "image=#{image}&"
     end
     if (rpp.present?)
