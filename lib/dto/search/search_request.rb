@@ -24,14 +24,15 @@ class SearchRequest
       end
 
       #If we have both values, then use them
+      #If either value is 0, then use the other value
+      #If BOTH values are 0, then don't do anything
       if pmin > 0 && pmax > 0
         url_params += "price=#{pmin}-#{pmax}&"
       elsif pmax > 0
         url_params += "price=<#{pmax}&"
-      else
+      elsif pmin > 0
         url_params += "price=>#{pmin}&"
       end
-      #either value is 0, then don't append it
     end
     if (image =~ /\A(yes|no)/i))
       url_params += "image=#{image}&"
