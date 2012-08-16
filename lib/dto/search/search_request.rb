@@ -1,6 +1,6 @@
 class SearchRequest
   # annotations attribute should be a Hash object
-  attr_accessor :image, :rpp, :page, :source, :category, :location, :heading,
+  attr_accessor :image, :price_min, :price_max, :rpp, :page, :source, :category, :location, :heading,
     :body, :text, :external_id, :start, :end, :annotations,
     :trusted_annotations, :retvals
 
@@ -12,6 +12,27 @@ class SearchRequest
     query = Hash.new
     url_params = ''
     #Perform a case insensitive match on the image attribute
+    if (price_min.present? || price_max.present?)
+      pmin = price_min.to_i
+      pmax = price_max.to_i
+
+      #max less than min, then flip the values
+      if pmin > pmax
+        temp_max = pmax
+        pmax = pmin
+        pmin = temp_max
+      end
+
+      #If we have both values, then use them
+      if pmin > 0 && pmax > 0
+        url_params += "price=#{pmin}-#{pmax}&"
+      elsif pmax > 0
+        url_params += "price=<#{pmax}&"
+      else
+        url_params += "price=>#{pmin}&"
+      end
+      #either value is 0, then don't append it
+    end
     if (image =~ /\A(yes|no)/i))
       url_params += "image=#{image}&"
     end
