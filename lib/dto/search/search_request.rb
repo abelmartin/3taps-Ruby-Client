@@ -34,7 +34,7 @@ class SearchRequest
         url_params += "price=>#{pmin}&"
       end
     end
-    if (image =~ /\A(yes|no)/i))
+    if (image =~ /\A(yes|no)/i)
       url_params += "image=#{image}&"
     end
     if (rpp.present?)
